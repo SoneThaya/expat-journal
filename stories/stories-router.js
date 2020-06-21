@@ -72,5 +72,15 @@ router.put('/:id', (req, res) => {
     })
 })
 
+router.delete('/:id', (req, res) => {
+  Stories.remove(req.params.id)
+    .then(() => {
+      res.status(200).json({message: 'Succesfully deleted story'})
+    })
+    .catch(err => {
+      res.status(500).json({errMessage: err.message})
+    })
+})
+
 
 module.exports = router;
