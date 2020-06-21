@@ -22,7 +22,7 @@ router.post('/register', (req, res) => {
         res.status(201).json({ data: user });
       })
       .catch(err => {
-        res.status(500).json({ message: error.message })
+        res.status(500).json({ message: err.message })
       })
   } else {
     res.status(400).json({
