@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const authRouter = require('./auth/auth-router');
 const usersRouter = require('./users/users-router')
+const storiesRouter = require('./users/users-router')
 
 const server = express();
 
@@ -15,7 +16,7 @@ server.use('/api/auth', authRouter);
 server.use('/api/users', usersRouter);
 
 server.get('/', (req, res) => {
-  res.json({api: 'up'})
+  res.json({api: 'up and running'})
 })
 
 module.exports = server;
