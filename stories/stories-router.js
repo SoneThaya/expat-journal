@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
       res.status(200).json(stories)
     })
     .catch((err) => {
-      res.status(500).json({errMessage: 'Error getting stories.'})
+      res.status(500).json({errMessage: err.message})
     })
 })
 
