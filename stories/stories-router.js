@@ -8,13 +8,69 @@ router.get('/', (req, res) => {
       res.status(200).json(stories)
     })
     .catch((err) => {
-      res.status(500).json({error: 'Error getting stories.'})
+      res.status(500).json({errMessage: 'Error getting stories.'})
     })
 })
 
-// router.get('/:id', (req, res) => {
-//   res.status(200).json(req.story)
-// })
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+
+  Stories.getByStoryId(id)
+    .then(story => {
+      res.status(200).json({story})
+    })
+    .catch(err => {
+      res.status(500).json({message: err.message})
+    })
+})
+
+router.post('/', (req, res) => {
+  const newStory = {
+    ...req.body,
+    user_id: req.user_id
+  };
+
+  Stories.insert(newStory)
+    .then(([response]) => {
+      if (response) {
+        Stories.getByStoryId(response)
+          .then(response => {
+            res.status(200).json(response)
+          })
+          .catch(err => {
+            res.status(401).json({errMessage: err.message})
+          })
+      } else {
+        res.status(400).json({message: 'No user id provided'})
+      }
+    })
+    .catch(err => {
+      res.status(500).json({errMessage: err.message})
+    })
+})
+
+router.put('/:id', (req, res) => {
+  const changes = req.body;
+  const id = req.params.id;
+
+  Stories.update(id, changes)
+    .then(updateStory => {
+      if (updateStory) {
+        Stories.getByStoryId(id)
+          .then(newStory => {
+            res.status(200).json(newStory)
+          })
+          .catch(err => {
+            res.status(500).json({errMessage: err.message})
+          })
+      } else {
+        res.status(400).json({message: 'That story id does not exist.'})
+      }
+    })
+    .catch(err => {
+      res.status(500).json({errMessage: err.message})
+    })
+})
 
 
 module.exports = router;

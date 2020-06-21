@@ -2,7 +2,7 @@ const db = require('../data/db-config');
 
 module.exports = {
   get,
-  getById,
+  getByStoryId,
   insert,
   update,
   remove
@@ -10,10 +10,9 @@ module.exports = {
 
 function get() {
   return db('stories')
-    // .select('s.id as story_id', 's.user_id', 's.title', 's.description', 's.date', 's.location', 's.storyImage')
 }
 
-function getById() {
+function getByStoryId(id) {
   return db('stories').where({id}).first()
 }
 
