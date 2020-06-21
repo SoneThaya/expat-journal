@@ -11,12 +11,16 @@ exports.up = function(knex) {
 
     .createTable('stories', stories => {
       stories.increments();
-      stories.integer('user_id').unsigned().references('users.id');
       stories.string('title', 128).notNullable();
       stories.string('location', 128).notNullable();
       stories.string('date', 128);
-      stories.string('description', 255).notNullable();
-      stories.string('storyImage', 550);
+      stories.string('description', 1000).notNullable();
+      stories.string('storyImage', 1000);
+      stories.integer('user_id')
+        .unsigned()
+        .references('users.id')
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
   })
 };
 
