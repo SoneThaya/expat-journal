@@ -2,7 +2,6 @@
 exports.seed = function(knex) {
   // Deletes ALL existing entries
   return knex('users')
-    .truncate()
     .then(function () {
       // Inserts seed entries
       return knex('users').insert([
@@ -11,7 +10,7 @@ exports.seed = function(knex) {
       ]);
     })
     
-    .then(() => knex('stories').truncate())
+    .then(() => knex('stories'))
     .then(function () {
       return knex('stories').insert([
         {
