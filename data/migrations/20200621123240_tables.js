@@ -19,13 +19,13 @@ exports.up = function(knex) {
       stories.integer('user_id')
         .unsigned()
         .references('users.id')
-        .onUpdate("CASCADE")
-        .onDelete("CASCADE");
+        // .onUpdate("CASCADE")
+        // .onDelete("CASCADE");
   })
 };
 
 exports.down = function(knex) {
   return knex.schema
-    .dropTablesIfExists('stories')
-    .dropTablesIfExists('users')
+    .dropTableIfExists('stories')
+    .dropTableIfExists('users')
 };
