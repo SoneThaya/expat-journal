@@ -9,12 +9,10 @@ module.exports = {
 };
 
 function isLoggedIn(req, res, next){
-  //const token = req.headers.Authorization;
-  const authHeader = req.headers.authorization;
+  const token = req.headers.authorization;
 
-  if (authHeader) {
-    const authToken = authHeader.split(" ")[1];
-    jwt.verify(authToken, jwtSecret, (error, decodedToken) => {
+  if(token){
+    jwt.verify(token, jwtSecret, (error, decodedToken) => {
       if(error){
         res.status(401).json({ message: "Log in to continue"});
       } else {
