@@ -9,7 +9,7 @@ module.exports = {
 };
 
 function isLoggedIn(req, res, next){
-  const token = req.headers.authorization;
+  const token = req.headers.Authorization;
 
   if(token){
     jwt.verify(token, jwtSecret, (error, decodedToken) => {
