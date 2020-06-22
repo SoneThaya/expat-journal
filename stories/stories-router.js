@@ -27,7 +27,7 @@ router.get('/:id', (req, res) => {
 })
 
 router.get('/my-stories', isLoggedIn, (req, res) => {
-  Stories.getStoriesByUserId(req.jwt.user_id)
+  Stories.getStoriesByUserId(req.user_id)
     .then(stories => {
       res.status(200).json(stories)
     })
