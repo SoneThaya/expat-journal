@@ -1,8 +1,8 @@
 const router = require('express').Router()
 const Stories = require('./stories-model');
-const { restricted } = require('../middleware/authMiddleware')
+const { isLoggedIn } = require('../middleware/authMiddleware')
 
-router.use(restricted)
+
 
 router.get('/', (req, res) => {
   Stories.get()
@@ -26,7 +26,7 @@ router.get('/:id', (req, res) => {
     })
 })
 
-router.get('/my-stories', (req, res) => {
+router.get('/my-stories', isLoggedIn, (req, res) => {
   Stories.getStoriesByUserId(req.jwt.user_id)
     .then(stories => {
       res.status(200).json(stories)
@@ -36,7 +36,7 @@ router.get('/my-stories', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', isLoggedIn, (req, res) => {
   const newStory = {
     ...req.body,
     user_id: req.user_id
@@ -61,7 +61,7 @@ router.post('/', (req, res) => {
     })
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', isLoggedIn, (req, res) => {
   const changes = req.body;
   const id = req.params.id;
 
@@ -84,7 +84,7 @@ router.put('/:id', (req, res) => {
     })
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', isLoggedIn, (req, res) => {
   Stories.remove(req.params.id)
     .then(() => {
       res.status(200).json({message: 'Succesfully deleted story'})

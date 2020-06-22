@@ -1,15 +1,14 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-
 const { jwtSecret } = require("../data/jwtConfig.js");
 
 
 module.exports = {
-  restricted
+  isLoggedIn
 };
 
-function restricted(req, res, next){
+function isLoggedIn(req, res, next){
   const token = req.headers.authorization;
 
   if(token){
