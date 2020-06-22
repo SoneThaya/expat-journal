@@ -1,6 +1,7 @@
 # expat journal documentation
 
 ## Base Url:
+https://bw-expatjournal.herokuapp.com/
 
 ## POST to /api/auth/register expects:
 ```
