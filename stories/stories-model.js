@@ -17,15 +17,16 @@ function getByStoryId(id) {
   return db('stories').where({id}).first()
 }
 
-function getStoriesByUserId(id) {
+function getStoriesByUserId(jwt_id) {
   return db('stories as s')
     .select('s.user_id', 's.id as story_id', 's.title', 's.location', 's.date', 's.description', 's.storyImage')
-    .where('s.user_id', id)
+    .where('s.user_id', jwt_id)
 }
 
-function insert(story) {
+function insert(newStory) {
   return db('stories')
-    .insert(story)
+    .insert(newStory)
+    .where('stories.id', newStory.user_id)
 }
 
 function remove(id) {

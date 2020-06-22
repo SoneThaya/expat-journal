@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const Stories = require('./stories-model');
+const { restricted } = require('../middleware/authMiddleware')
 
+router.use(restricted)
 
 router.get('/', (req, res) => {
   Stories.get()
@@ -15,12 +17,22 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const id = req.params.id;
 
-  Stories.getStoriesByUserId(id)
+  Stories.getByStoryId(id)
     .then(story => {
       res.status(200).json({story})
     })
     .catch(err => {
       res.status(500).json({message: err.message})
+    })
+})
+
+router.get('/my-stories', (req, res) => {
+  Stories.getStoriesByUserId(req.jwt.user_id)
+    .then(stories => {
+      res.status(200).json(stories)
+    })
+    .catch(err => {
+      res.status(500).json({errMessage: err.message})
     })
 })
 
