@@ -16,7 +16,7 @@ function isLoggedIn(req, res, next){
       if(error){
         res.status(401).json({ message: "Log in to continue"});
       } else {
-        req.token = decodedToken;
+        req.jwt = decodedToken;
         next();
       };
     });
