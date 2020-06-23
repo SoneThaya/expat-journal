@@ -37,30 +37,44 @@ router.get('/my-stories', isLoggedIn, (req, res) => {
     })
 })
 
-router.post('/', isLoggedIn, (req, res) => {
-  const newStory = {
-    ...req.body,
-    user_id: req.user_id
-  };
+// router.post('/', isLoggedIn, (req, res) => {
+//   const newStory = {
+//     ...req.body,
+//     user_id: req.user_id
+//   };
 
-  Stories.insert(newStory)
-    .then(([response]) => {
-      if (response) {
-        Stories.getByStoryId(response)
-          .then(response => {
-            res.status(200).json(response)
-          })
-          .catch(err => {
-            res.status(401).json({errMessage: err.message})
-          })
-      } else {
-        res.status(400).json({message: 'No user id provided'})
-      }
+//   Stories.insert(newStory)
+//     .then(([response]) => {
+//       if (response) {
+//         Stories.getByStoryId(response)
+//           .then(response => {
+//             res.status(200).json(response)
+//           })
+//           .catch(err => {
+//             res.status(401).json({errMessage: err.message})
+//           })
+//       } else {
+//         res.status(400).json({message: 'No user id provided'})
+//       }
+//     })
+//     .catch(err => {
+//       res.status(500).json({errMessage: err.message})
+//     })
+// })
+
+router.post("/", isLoggedIn, (req, res) => {
+  const story = req.body
+  story.user_id = req.decodedToken.subject
+  
+  Stories.insert(story)
+    .then((result) => {
+      res.status(201).send();
     })
-    .catch(err => {
-      res.status(500).json({errMessage: err.message})
-    })
-})
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({ error: "error connecting to database" });
+    });
+});
 
 router.put('/:id', isLoggedIn, (req, res) => {
   const changes = req.body;

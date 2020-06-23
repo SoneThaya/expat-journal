@@ -26,7 +26,10 @@ function getStoriesByUserId(id) {
 function insert(newStory) {
   return db('stories')
     .insert(newStory)
-    .where('stories.id', newStory.user_id)
+    // .then(res => {
+    //   return getByStoryId(id)
+    // })
+    
 }
 
 function remove(id) {
