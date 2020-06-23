@@ -29,6 +29,10 @@ https://bw-expatjournal.herokuapp.com/
 ##### id of the story you want
 ##### Returns story linked to that story id
 
+## GET to /api/stories/:id/my-stories
+##### id of the user you want to get all stories from
+##### returns all of that user's stories
+
 
 ## POST to /api/stories
 expects:

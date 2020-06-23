@@ -27,8 +27,8 @@ router.get('/:id', (req, res) => {
     })
 })
 
-router.get('/my-stories', isLoggedIn, (req, res) => {
-  Stories.getStoriesByUserId(req.user_id)
+router.get('/:id/my-stories', isLoggedIn, (req, res) => {
+  Stories.getStoriesByUserId(req.params.id)
     .then(stories => {
       res.status(200).json(stories)
     })
