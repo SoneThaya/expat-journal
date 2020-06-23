@@ -5,7 +5,9 @@ const { jwtSecret } = require("../data/jwtConfig.js");
 
 
 module.exports = {
-  isLoggedIn
+  isLoggedIn,
+  isValidUserEditStory,
+  
 };
 
 function isLoggedIn(req, res, next){
@@ -27,3 +29,10 @@ function isLoggedIn(req, res, next){
     res.status(400).json({ message: "Please provide credentials"});
   };
 };
+
+function isValidUserEditStory(req, res, next) {
+  if (req.decodedToken.subject !== req.story.user_id) {
+    return res.status(403).json({error: 'You did not post this story'})
+  }
+  next();
+}

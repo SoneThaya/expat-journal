@@ -1,7 +1,8 @@
 const router = require('express').Router();
 
 const Users = require('./users-model');
-const restricted = require('../auth/restricted-middleware');
+// const restricted = require('../auth/restricted-middleware');
+const { isLoggedIn  } = require('../middleware/authMiddleware')
 
 router.get('/', (req, res) => {
   Users.find()
@@ -19,6 +20,20 @@ router.get('/:id', (req, res) => {
     })
     .catch(err => {
       res.status(500).json({message: err.message})
+    })
+})
+
+router.delete('/:id', isLoggedIn, (req, res) => {
+  Users.remove(req.params.id)
+    .then(count => {
+      if (count === 1) {
+        res.status(204).send()
+      } else {
+        res.status(500).json({error: 'Cannot delete user'})
+      }
+    })
+    .catch(err => {
+      res.status(500).json({error: 'Server error'})
     })
 })
 

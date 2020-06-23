@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const Stories = require('./stories-model');
-const { isLoggedIn } = require('../middleware/authMiddleware')
+const { isLoggedIn, isValidUserEditStory  } = require('../middleware/authMiddleware')
 
 
 
@@ -76,7 +76,7 @@ router.post("/", isLoggedIn, (req, res) => {
     });
 });
 
-router.put('/:id', isLoggedIn, (req, res) => {
+router.put('/:id', isLoggedIn, isValidUserEditStory, (req, res) => {
   const changes = req.body;
   const id = req.params.id;
 
@@ -99,7 +99,7 @@ router.put('/:id', isLoggedIn, (req, res) => {
     })
 })
 
-router.delete('/:id', isLoggedIn, (req, res) => {
+router.delete('/:id', isLoggedIn, isValidUserEditStory, (req, res) => {
   Stories.remove(req.params.id)
     .then(() => {
       res.status(200).json({message: 'Successfully deleted story'})
