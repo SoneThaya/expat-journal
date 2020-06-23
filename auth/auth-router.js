@@ -5,30 +5,39 @@ const router = require('express').Router();
 
 const Users = require('../users/users-model')
 const { isValid } = require('../users/users-service')
-const constants = require('../config/constants')
+//const constants = require('../config/constants')
 
-router.post('/register', (req, res) => {
-  const credentials = req.body;
+// router.post('/register', (req, res) => {
+//   const credentials = req.body;
 
-  if (isValid(credentials)) {
-    const rounds = process.env.BCRYPT_ROUNDS || 8
+//   if (isValid(credentials)) {
+//     const rounds = process.env.BCRYPT_ROUNDS || 8
 
-    const hash = bcryptjs.hashSync(credentials.password, rounds)
+//     const hash = bcryptjs.hashSync(credentials.password, rounds)
 
-    credentials.password = hash;
+//     credentials.password = hash;
 
-    Users.add(credentials)
-      .then(user => {
-        res.status(201).json({ data: user });
-      })
-      .catch(err => {
-        res.status(500).json({ message: err.message })
-      })
-  } else {
-    res.status(400).json({
-      message: 'Please provide username and password.'
-    })
-  }
+//     Users.add(credentials)
+//       .then(user => {
+//         res.status(201).json({ data: user });
+//       })
+//       .catch(err => {
+//         res.status(500).json({ message: err.message })
+//       })
+//   } else {
+//     res.status(400).json({
+//       message: 'Please provide username and password.'
+//     })
+//   }
+// });
+
+router.post("/register", (req, res) => {
+  const user = req.body;
+  const hash = bcryptjs.hashSync(user.password, 14);
+  user.password = hash;
+  Users.add(user)
+    .then((id) => res.status(201).send())
+    .catch((err) => res.status(500).json({ error: `error registering user, ${err}` }));
 });
 
 router.post('/login', (req, res) => {
@@ -66,5 +75,7 @@ function createToken(user) {
   }
   return jwt.sign(payload, process.env.JWTKEY, options)
 }
+
+
 
 module.exports = router;
