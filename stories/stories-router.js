@@ -76,11 +76,11 @@ router.post("/", isLoggedIn, (req, res) => {
     });
 });
 
-router.put('/:id', isLoggedIn, (req, res) => {
-  const changes = req.body;
+router.put('/:id', isLoggedIn, isValidUserEditStory, (req, res) => {
+  // const changes = req.body;
   const id = req.params.id;
 
-  Stories.update(id, changes)
+  Stories.update(Number(id), req.body)
     .then(updateStory => {
       if (updateStory) {
         Stories.getByStoryId(id)
@@ -99,8 +99,8 @@ router.put('/:id', isLoggedIn, (req, res) => {
     })
 })
 
-router.delete('/:id', isLoggedIn, (req, res) => {
-  Stories.remove(req.params.id)
+router.delete('/:id', isLoggedIn, isValidUserEditStory, (req, res) => {
+  Stories.remove(Number(req.params.id))
     .then(() => {
       res.status(200).json({message: 'Successfully deleted story'})
     })

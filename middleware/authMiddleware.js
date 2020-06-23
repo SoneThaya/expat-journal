@@ -31,7 +31,7 @@ function isLoggedIn(req, res, next){
 };
 
 function isValidUserEditStory(req, res, next) {
-  if (req.decodedToken.subject !== req.story.user_id) {
+  if (req.decodedToken.subject !== req.body.user_id) {
     return res.status(403).json({error: 'You did not post this story'})
   }
   next();
