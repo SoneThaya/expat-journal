@@ -36,8 +36,8 @@ router.post("/register", (req, res) => {
   const hash = bcryptjs.hashSync(user.password, 14);
   user.password = hash;
   Users.add(user)
-    .then((id) => res.status(201).send())
-    .catch((err) => res.status(500).json({ error: `error registering user, ${err}` }));
+    .then((id) => res.status(201).send(user))
+    .catch((err) => res.status(500).json({ errMessage: err.message }));
 });
 
 router.post('/login', (req, res) => {
