@@ -11,12 +11,15 @@ module.exports = {
 function isLoggedIn(req, res, next){
   const token = req.headers.authorization;
 
+  console.log(token)
   if(token){
-    jwt.verify(token, jwtSecret, (error, decodedToken) => {
+    jwt.verify(token, process.env.JWTKEY, (error, decodedToken) => {
+      console.log(error)
       if(error){
         res.status(401).json({ message: "Log in to continue"});
       } else {
-        req.jwt = decodedToken;
+        req.decodedToken = decodedToken;
+        console.log(req.decodedToken)
         next();
       };
     });

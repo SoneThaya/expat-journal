@@ -5,6 +5,7 @@ const { isLoggedIn } = require('../middleware/authMiddleware')
 
 
 router.get('/', (req, res) => {
+  console.log(req.decodedToken)
   Stories.get()
     .then(stories => {
       res.status(200).json(stories)
