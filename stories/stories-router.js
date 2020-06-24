@@ -78,8 +78,8 @@ router.post("/", isLoggedIn, (req, res) => {
 
 router.put('/:id', isLoggedIn, (req, res) => {
   
-  req.body.user_id = req.decodedToken.subject
-  const changes = req.body;
+  // req.body.user_id = req.decodedToken.subject
+  const changes = { ...req.body,  user_id: req.decodedToken.subject };
   const id = req.params.id;
 
   Stories.update(Number(id), changes)
