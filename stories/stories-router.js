@@ -99,10 +99,14 @@ router.put('/:id', isLoggedIn, isValidUserEditStory, (req, res) => {
     })
 })
 
-router.delete('/:id', isLoggedIn, isValidUserEditStory, (req, res) => {
-  Stories.remove(Number(req.params.id))
-    .then(() => {
-      res.status(200).json({message: 'Successfully deleted story'})
+router.delete('/:id', isLoggedIn, (req, res) => {
+  const id = req.params.id
+
+  Stories.remove(Number(id))
+    .then((result) => {
+      if (result === 1) {
+        res.status(202).json({message: 'Successfully deleted story'})
+      }
     })
     .catch(err => {
       res.status(500).json({errMessage: err.message})
