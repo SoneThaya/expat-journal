@@ -76,7 +76,7 @@ router.post("/", isLoggedIn, (req, res) => {
     });
 });
 
-router.put('/:id', isLoggedIn, isValidUserEditStory, (req, res) => {
+router.put('/:id', isLoggedIn, (req, res) => {
   
   req.body.user_id = req.decodedToken.subject
   const changes = req.body;
